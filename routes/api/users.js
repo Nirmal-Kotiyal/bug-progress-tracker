@@ -1,5 +1,5 @@
 const express =require('express');
-const usermodel=require('../model/user.model')
+const usermodel=require('../../model/user-bugs.model')
 const router=express.Router();
 
 router.get('/',(req,res)=>{
@@ -19,24 +19,43 @@ usermodel.find().exec((err,doc)=>{
 });
 
 router.post('/add',(req,res)=>{
-const newuser=new usermodel({
-    username:req.body.username,
-    bugdetail:[{
-        bugname:req.body.bugname,
-        duration:req.body.duration,
-        completed:req.body.completed
-    }]
-});
+    usermodel.findOne({username:req.body.username})
+    .then(result=>{
+        if(result===null){
+            const newuser=new usermodel({
+                username:req.body.username,
+                bugdetail:[{
+                    bugname:req.body.bugname,
+                    label:req.body.label,
+                    progress:req.body.progress,
+                    duedate:req.body.duedate
+                }]
+            });
+            
+            newuser.save().then(res.send('User Sucessfully Added'))
+            .catch(err=>{console.log(err)});
+        }
+        else{
+            usermodel.findOne({username:req.body.username})
+            .then(result=>{
+                result.bugdetail.push({
+                    bugname:req.body.bugname,
+                    label:req.body.label,
+                    progress:req.body.progress,
+                    duedate:req.body.duedate            
+                })
+                result.save().then(res.send("Bug added")).catch(err=>console.error(err));
+            })
+        }
+    })
 
-newuser.save().then(res.send('User Sucessfully Added'))
-.catch(err=>{console.log(err)});
 });
 
 router.get('/:username',(req,res)=>{
     const username=req.params.username;
 
     usermodel.findOne({username:username})
-    .then(result=>res.send(result.bugdetail).json())
+    .then(result=>res.send({bugdetail:result.bugdetail,id:result._id}).json())
     .catch(err=>res.send(err));
 });
 
@@ -47,8 +66,9 @@ usermodel.findOne({username:username})
 .then(result=>{
 result.bugdetail.push({
     bugname:req.body.bugname,
-    duration:req.body.duration,
-    completed:req.body.completed
+    label:req.body.label,
+    progress:req.body.progress,
+    duedate:req.body.duedate
 });
 result.save().then(res.send("Bug is Added")).catch(err=>res.send(err));
 }).catch(err=>res.send(err));
@@ -69,8 +89,9 @@ router.patch('/:username/:id',(req,res)=>{
 
         result.bugdetail.push({
         bugname:req.body.bugname,
-        duration:req.body.duration,
-        completed:req.body.completed
+        label:req.body.label,
+        progress:req.body.progress,
+        duedate:req.body.duedate
         });
 
         result.save().then(result=>res.send(result)).catch(err=>res.send(err));
