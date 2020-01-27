@@ -76,6 +76,11 @@ this.setState({
 
 onsubmit(e){
     e.preventDefault();
+    const data=sessionStorage.getItem("SessionStorage");
+  const parseddata = JSON.parse(data);
+  const userdata={
+    username:parseddata.name
+  }
     const date=this.state.duedate.toDateString();
     const bug={
         username:this.state.username,
@@ -100,6 +105,9 @@ onsubmit(e){
     Axios.post('/api/user/add',bug)
     .then(result=>console.log("Bug SucessFully Added"))
     .catch(err=>console.log(err));
+
+    window.location=`/content/new/${userdata.username}`;
+
 }
 }
 

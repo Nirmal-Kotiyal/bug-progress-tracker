@@ -107,7 +107,7 @@ onsubmit(e){
         this.setState({
             severity:"success",
             open:true,
-            resp:"New Bug Added"
+            resp:"Bug Detail Has Been Changed"
           })   
     
     window.location=`/content?username=${userdata.username}&token=${userdata.id}`;
