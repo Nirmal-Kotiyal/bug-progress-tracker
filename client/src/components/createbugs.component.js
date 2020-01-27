@@ -93,7 +93,7 @@ onsubmit(e){
     }
     else{
         this.setState({
-            severity:"sucess",
+            severity:"success",
             open:true,
             resp:"New Bug Added"
           })

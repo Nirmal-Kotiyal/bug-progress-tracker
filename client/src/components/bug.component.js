@@ -71,7 +71,7 @@ render(){
                     <tr>
                       <th style={{fontFamily:"Raleway"}}>Bug</th>
                       <th style={{fontFamily:"Raleway"}}>Created</th>
-                      <th style={{fontFamily:"Raleway"}}>Progress</th>
+                      <th style={{fontFamily:"Raleway"}}>Status</th>
                       <th style={{fontFamily:"Raleway"}}>Due Date</th>
                       <th style={{fontFamily:"Raleway"}}>Actions</th>
                     </tr>
